@@ -5,9 +5,7 @@
 $fn = 200;
 
 // Render Type: "full" | "mid" | "low" | "cyl"
-renderType = "full";
-//-----------------------------------------------
-
+renderType = "mid";
 
 //-----------------------------------------------
 // Base Cylinder Settings
@@ -19,13 +17,11 @@ cylinderHoleRadius = 3.5;
 cylinderHoleHeight = 10;
 
 rodRadius = cylinderHoleRadius;
-//-----------------------------------------------
-
 
 //-----------------------------------------------
 // Definition
 //-----------------------------------------------
-segments = 6;
+segments = 7;
 
 // Upper
 arcLinkUpper = 25;
@@ -33,9 +29,7 @@ rodLengthUpper = 600;
 
 middleRadius = 300;
 lowerRadius = 200;
-lowerHeight = 200;
-//-----------------------------------------------
-
+lowerHeight = 100;
 
 //-----------------------------------------------
 // Some Calculation
@@ -48,18 +42,19 @@ _segLengthMiddle = 2*middleRadius*sin(360/segments/2);
 _segLengthLower = 2*lowerRadius*sin(360/segments/2);
 
 
-_r = middleRadius - sqrt(pow(lowerRadius, 2) - pow(_segLengthLower/2, 2));
-_a = sqrt(pow(lowerHeight, 2) + pow(_r, 2));
+_rM = middleRadius - sqrt(pow(lowerRadius, 2) - pow(_segLengthLower/2, 2));
+_a = sqrt(pow(lowerHeight, 2) + pow(_rM, 2));
+
 _lengthLink = sqrt(pow(_a, 2) + pow(1/2*_segLengthLower, 2));
 
 _arcLinkLower = 2*asin(_segLengthMiddle/(2*_lengthLink));
 _arcLinkMiddle = 2*asin(_segLengthLower/(2*_lengthLink));
 
+_arcLinkMiddleDia = acos(_rM/_a);
 
-_arcLinkMiddleDia = acos(_r/_a);
-
+_rL = lowerRadius - sqrt(pow(middleRadius, 2) - pow(_segLengthMiddle/2, 2));
 _x = sqrt(pow(_lengthLink, 2) - pow(_segLengthMiddle/2, 2));
-_arcLinkLowerDia = acos(lowerHeight/_x);
+_arcLinkLowerDia = acos(lowerHeight/_x) * sign(_rL);
 
 // Rod Length
 _rodLenghtMiddle = _segLengthMiddle - 2*_rodOffset;
@@ -69,6 +64,9 @@ _rodLenghtLink = _lengthLink - 2*_rodOffset;
 echo("Rod Length Middle Inner: ", _rodLenghtMiddle);
 echo("Rod Length Lower Inner: ", _rodLenghtLower);
 echo("Rod Length Link: ", _rodLenghtLink);
+
+echo("Rod Length Link: ", sign(_rL));
+echo("Rod Length Link: ", _arcLinkLowerDia);
 //-----------------------------------------------
 
 module baseCylinder() {
@@ -118,8 +116,8 @@ module middlePlug(showRods = false) {
 
 module lowerPlug(showRods = false) {
     arcs = [
-        [-_arcLinkLower/2, -_arcLinkLowerDia, 0],
-        [_arcLinkLower/2, -_arcLinkLowerDia, 0], 
+        [-_arcLinkLower/2, _arcLinkLowerDia, 0],
+        [_arcLinkLower/2, _arcLinkLowerDia, 0], 
         [-90, 0, - (90 - _innerArc)], // LEFT
         [90, 0, 90 - _innerArc] // RIGHT
     ];
