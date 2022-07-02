@@ -2,10 +2,10 @@
 // Base Display Options
 //-----------------------------------------------
 // Fragments
-$fn = 200;
+$fn = 20;
 
 // Render Type: "full" | "mid" | "low" | "cyl"
-renderType = "mid";
+renderType = "full";
 
 //-----------------------------------------------
 // Base Cylinder Settings
@@ -13,7 +13,7 @@ renderType = "mid";
 cylinderRadius =  5;
 cylinderHeight = 20;
 
-cylinderHoleRadius = 3.5;
+cylinderHoleRadius = 3;
 cylinderHoleHeight = 10;
 
 rodRadius = cylinderHoleRadius;
@@ -21,14 +21,14 @@ rodRadius = cylinderHoleRadius;
 //-----------------------------------------------
 // Definition
 //-----------------------------------------------
-segments = 7;
+segments = 10;
 
 // Upper
 arcLinkUpper = 25;
-rodLengthUpper = 600;
+rodLengthUpper = 450;
 
-middleRadius = 300;
-lowerRadius = 200;
+middleRadius = 200;
+lowerRadius = 100;
 lowerHeight = 100;
 
 //-----------------------------------------------
